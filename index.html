@@ -1,0 +1,719 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Zaraar Haider · Full-Stack Portfolio</title>
+
+    <!-- Fonts & Icons -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Bootstrap 5 -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com">
+    </script>
+
+    <style>
+        /* ── Reset & Base ── */
+        * {
+            font-family: 'Inter', sans-serif;
+        }
+        body {
+            background: #0a0a0f;
+            color: #e5e7eb;
+            overflow-x: hidden;
+        }
+
+        /* ── Glow effects ── */
+        .glow-blue {
+            box-shadow: 0 0 40px rgba(59, 130, 246, 0.15);
+        }
+        .glow-purple {
+            box-shadow: 0 0 40px rgba(139, 92, 246, 0.15);
+        }
+
+        /* ── Gradient text ── */
+        .gradient-text {
+            background: linear-gradient(135deg, #60a5fa, #a78bfa, #f472b6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        /* ── Glass cards ── */
+        .glass-card {
+            background: rgba(255, 255, 255, 0.03);
+            backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.06);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        .glass-card:hover {
+            transform: translateY(-8px) scale(1.01);
+            border-color: rgba(96, 165, 250, 0.3);
+            box-shadow: 0 20px 60px rgba(59, 130, 246, 0.15);
+        }
+
+        /* ── Section badge ── */
+        .section-badge {
+            background: rgba(96, 165, 250, 0.1);
+            border: 1px solid rgba(96, 165, 250, 0.2);
+            color: #93bbfc;
+            padding: 0.4rem 1.2rem;
+            border-radius: 100px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        /* ── Floating animation ── */
+        @keyframes float {
+            0%,
+            100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+        .float-animation {
+            animation: float 6s ease-in-out infinite;
+        }
+
+        /* ── Smooth scroll ── */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* ── Navbar blur ── */
+        .navbar-blur {
+            background: rgba(10, 10, 15, 0.8);
+            backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* ── Tech tags ── */
+        .tech-tag {
+            background: rgba(96, 165, 250, 0.08);
+            border: 1px solid rgba(96, 165, 250, 0.15);
+            color: #93bbfc;
+            padding: 0.25rem 0.75rem;
+            border-radius: 100px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            letter-spacing: 0.3px;
+            transition: all 0.3s;
+        }
+        .tech-tag:hover {
+            background: rgba(96, 165, 250, 0.2);
+            border-color: rgba(96, 165, 250, 0.4);
+        }
+
+        /* ── Hero stats ── */
+        .stat-item {
+            border-right: 1px solid rgba(255, 255, 255, 0.06);
+            padding-right: 1.5rem;
+        }
+        .stat-item:last-child {
+            border-right: none;
+        }
+
+        /* ── Scrollbar ── */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0f;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #3b82f6, #8b5cf6);
+            border-radius: 100px;
+        }
+
+        /* ── fadeInUp animation (JS will inject this) ── */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ── Loading spinner ── */
+        .spinner-overlay {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 3rem 0;
+        }
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 3px solid rgba(96, 165, 250, 0.15);
+            border-top-color: #3b82f6;
+            border-radius: 50%;
+            animation: spin 0.8s linear infinite;
+        }
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- ============================================================ -->
+    <!-- NAVBAR                                                        -->
+    <!-- ============================================================ -->
+    <nav class="navbar navbar-expand-lg fixed-top navbar-blur">
+        <div class="container px-4">
+            <a class="navbar-brand text-white fw-bold text-2xl tracking-tight" href="#">
+                <i class="fas fa-cube text-indigo-400 me-2"></i>ZH.
+            </a>
+            <button class="navbar-toggler border-0 text-white" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+                <i class="fas fa-bars"></i>
+            </button>
+            <div class="collapse navbar-collapse" id="navMenu">
+                <ul class="navbar-nav ms-auto gap-2 gap-lg-4">
+                    <li class="nav-item"><a class="nav-link text-gray-300 hover:text-white transition" href="#home">Home</a></li>
+                    <li class="nav-item"><a class="nav-link text-gray-300 hover:text-white transition" href="#projects">Projects</a></li>
+                    <li class="nav-item"><a class="nav-link text-gray-300 hover:text-white transition" href="#portfolio">Portfolio</a></li>
+                    <li class="nav-item"><a class="nav-link text-gray-300 hover:text-white transition" href="#services">Services</a></li>
+                    <li class="nav-item"><a class="nav-link text-gray-300 hover:text-white transition" href="#contact">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ============================================================ -->
+    <!-- HERO                                                          -->
+    <!-- ============================================================ -->
+    <section id="home" class="min-h-screen flex items-center pt-20 pb-10" style="background: radial-gradient(ellipse at 50% 0%, #1a1a2e 0%, #0a0a0f 70%);">
+        <div class="container px-4">
+            <div class="row align-items-center g-5">
+                <div class="col-lg-7">
+                    <div class="mb-4">
+                        <span class="section-badge"><i class="fas fa-code me-2"></i>Available for freelance</span>
+                    </div>
+                    <h1 class="display-2 fw-extrabold mb-3 tracking-tight">
+                        <span class="gradient-text">Zaraar Haider</span>
+                    </h1>
+                    <p class="lead text-gray-400 mb-4 fs-4 fw-light" style="max-width: 90%;">
+                        Full-stack developer crafting <span class="text-indigo-300 fw-semibold">digital experiences</span> with
+                        HTML, CSS, Bootstrap, Tailwind &amp; JavaScript.
+                    </p>
+                    <div class="d-flex flex-wrap gap-3 mb-5">
+                        <a href="#projects" class="btn btn-primary rounded-pill px-5 py-3 fw-semibold shadow-lg" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); border: none;">
+                            <i class="fas fa-rocket me-2"></i>View Work
+                        </a>
+                        <a href="#contact" class="btn btn-outline-light rounded-pill px-5 py-3 fw-semibold border-2">
+                            <i class="fas fa-paper-plane me-2"></i>Hire Me
+                        </a>
+                    </div>
+                    <div class="d-flex gap-4 flex-wrap" id="heroStats">
+                        <!-- Stats injected from JSON -->
+                    </div>
+                </div>
+                <div class="col-lg-5 text-center">
+                    <div class="position-relative">
+                        <div class="float-animation">
+                            <div class="bg-gradient-to-br from-indigo-500/20 to-purple-500/20 rounded-4 p-5 d-inline-block" style="border: 1px solid rgba(255,255,255,0.05);">
+                                <i class="fas fa-laptop-code text-indigo-300" style="font-size: 12rem; opacity: 0.8;"></i>
+                            </div>
+                        </div>
+                        <div class="position-absolute bottom-0 end-0 bg-indigo-500/10 rounded-full p-3" style="backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.1);">
+                            <i class="fas fa-check-circle text-indigo-300"></i> Available now
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- PROJECTS                                                      -->
+    <!-- ============================================================ -->
+    <section id="projects" class="py-5" style="background: #0f0f1a;">
+        <div class="container px-4">
+            <div class="text-center mb-5">
+                <span class="section-badge"><i class="fas fa-folder-open me-2"></i>My Work</span>
+                <h2 class="display-5 fw-bold mt-3">Featured <span class="gradient-text">Projects</span></h2>
+                <p class="text-gray-400 mt-2">Real-world applications built with modern tools</p>
+            </div>
+            <div class="row g-4" id="projectsContainer">
+                <!-- Spinner while loading -->
+                <div class="spinner-overlay col-12">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- PORTFOLIO                                                     -->
+    <!-- ============================================================ -->
+    <section id="portfolio" class="py-5" style="background: #0a0a0f;">
+        <div class="container px-4">
+            <div class="text-center mb-5">
+                <span class="section-badge"><i class="fas fa-images me-2"></i>Gallery</span>
+                <h2 class="display-5 fw-bold mt-3">Design <span class="gradient-text">Portfolio</span></h2>
+                <p class="text-gray-400 mt-2">Selected works that blend design &amp; code</p>
+            </div>
+            <div class="row g-4" id="portfolioContainer">
+                <div class="spinner-overlay col-12">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- SERVICES                                                      -->
+    <!-- ============================================================ -->
+    <section id="services" class="py-5" style="background: #0f0f1a;">
+        <div class="container px-4">
+            <div class="text-center mb-5">
+                <span class="section-badge"><i class="fas fa-cogs me-2"></i>What I Do</span>
+                <h2 class="display-5 fw-bold mt-3">My <span class="gradient-text">Services</span></h2>
+                <p class="text-gray-400 mt-2">End-to-end solutions for your digital needs</p>
+            </div>
+            <div class="row g-4" id="servicesContainer">
+                <div class="spinner-overlay col-12">
+                    <div class="spinner"></div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- CONTACT                                                       -->
+    <!-- ============================================================ -->
+    <section id="contact" class="py-5" style="background: #0a0a0f;">
+        <div class="container px-4">
+            <div class="text-center mb-5">
+                <span class="section-badge"><i class="fas fa-envelope me-2"></i>Get in Touch</span>
+                <h2 class="display-5 fw-bold mt-3">Let's <span class="gradient-text">Connect</span></h2>
+                <p class="text-gray-400 mt-2">Have a project? Let's bring it to life.</p>
+            </div>
+            <div class="row justify-content-center">
+                <div class="col-lg-6">
+                    <div class="glass-card rounded-4 p-5">
+                        <form id="contactForm">
+                            <div class="mb-4">
+                                <label class="form-label text-gray-300 fw-semibold">Your Name</label>
+                                <input type="text" id="contactName" class="form-control bg-transparent border-gray-700 text-white rounded-3" placeholder="John Doe" style="border: 1px solid rgba(255,255,255,0.1);" required />
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label text-gray-300 fw-semibold">Email Address</label>
+                                <input type="email" id="contactEmail" class="form-control bg-transparent border-gray-700 text-white rounded-3" placeholder="john@example.com" style="border: 1px solid rgba(255,255,255,0.1);" required />
+                            </div>
+                            <div class="mb-4">
+                                <label class="form-label text-gray-300 fw-semibold">Message</label>
+                                <textarea id="contactMessage" rows="4" class="form-control bg-transparent border-gray-700 text-white rounded-3" placeholder="Tell me about your project..." style="border: 1px solid rgba(255,255,255,0.1);" required></textarea>
+                            </div>
+                            <button type="submit" class="btn w-100 rounded-pill py-3 fw-bold text-white" style="background: linear-gradient(135deg, #3b82f6, #8b5cf6); border: none;">
+                                <i class="fas fa-paper-plane me-2"></i>Send Message
+                            </button>
+                        </form>
+                        <div id="formFeedback" class="mt-3 text-center d-none"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================ -->
+    <!-- FOOTER                                                        -->
+    <!-- ============================================================ -->
+    <footer class="py-4" style="border-top: 1px solid rgba(255,255,255,0.05); background: #0a0a0f;">
+        <div class="container text-center">
+            <p class="text-gray-500 small mb-2">
+                <i class="fas fa-code text-indigo-400 me-1"></i> Crafted with HTML, CSS, Bootstrap, Tailwind &amp; JavaScript
+            </p>
+            <div class="d-flex justify-content-center gap-4" id="socialLinks">
+                <!-- Social links injected from JSON -->
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js">
+    </script>
+
+    <!-- ============================================================ -->
+    <!-- JAVASCRIPT + JSON INTEGRATION                                 -->
+    <!-- ============================================================ -->
+    <script>
+        (function() {
+            'use strict';
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  1.  JSON DATA  (embedded as a JavaScript object)
+            //      This is our "data.json" equivalent.
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            const DATA = {
+                stats: [
+                    { value: '4+', label: 'Years Experience' },
+                    { value: '20+', label: 'Projects Delivered' },
+                    { value: '12+', label: 'Happy Clients' }
+                ],
+                projects: [{
+                    id: 1,
+                    title: 'Weather Dashboard',
+                    desc: 'Real-time weather with 5-day forecast, interactive maps, and location-based alerts.',
+                    tags: ['HTML', 'CSS', 'JS', 'API'],
+                    icon: 'fa-cloud-sun',
+                    color: 'from-blue-500/20 to-cyan-500/20'
+                }, {
+                    id: 2,
+                    title: 'TaskFlow Pro',
+                    desc: 'Full-featured task manager with drag-drop, priority labels, and real-time sync.',
+                    tags: ['Bootstrap', 'JS', 'LocalStorage'],
+                    icon: 'fa-tasks',
+                    color: 'from-indigo-500/20 to-purple-500/20'
+                }, {
+                    id: 3,
+                    title: 'ShopVerse',
+                    desc: 'E-commerce platform with cart, wishlist, payment gateway, and admin panel.',
+                    tags: ['Tailwind', 'JS', 'REST API'],
+                    icon: 'fa-store',
+                    color: 'from-purple-500/20 to-pink-500/20'
+                }, {
+                    id: 4,
+                    title: 'Blogify',
+                    desc: 'Markdown-powered blog platform with categories, search, and comment system.',
+                    tags: ['HTML', 'Tailwind', 'JS'],
+                    icon: 'fa-blog',
+                    color: 'from-green-500/20 to-emerald-500/20'
+                }, {
+                    id: 5,
+                    title: 'Finance Tracker',
+                    desc: 'Personal finance dashboard with expense charts, budget alerts, and CSV export.',
+                    tags: ['Bootstrap', 'Chart.js', 'JS'],
+                    icon: 'fa-wallet',
+                    color: 'from-yellow-500/20 to-orange-500/20'
+                }, {
+                    id: 6,
+                    title: 'Portfolio Pro',
+                    desc: 'Dynamic portfolio builder with drag-drop sections and live preview.',
+                    tags: ['Tailwind', 'JS', 'LocalStorage'],
+                    icon: 'fa-brush',
+                    color: 'from-pink-500/20 to-rose-500/20'
+                }],
+                portfolio: [{
+                    id: 1,
+                    name: 'Agency Landing',
+                    desc: 'High-conversion marketing page with GSAP animations and scroll-triggered effects.',
+                    tech: 'Tailwind + GSAP',
+                    icon: 'fa-paintbrush'
+                }, {
+                    id: 2,
+                    name: 'Analytics Dashboard',
+                    desc: 'Interactive dashboard with Chart.js, live data feeds, and dark/light themes.',
+                    tech: 'Bootstrap + Chart.js',
+                    icon: 'fa-chart-line'
+                }, {
+                    id: 3,
+                    name: 'Creative Gallery',
+                    desc: 'Masonry portfolio with filter, lightbox, and smooth transitions.',
+                    tech: 'CSS Grid + Fancybox',
+                    icon: 'fa-images'
+                }, {
+                    id: 4,
+                    name: 'Food Delivery App',
+                    desc: 'Mobile-first food ordering UI with real-time order tracking.',
+                    tech: 'Tailwind + Leaflet',
+                    icon: 'fa-utensils'
+                }, {
+                    id: 5,
+                    name: 'Health Tracker',
+                    desc: 'Wellness dashboard with activity logs, progress rings, and reminders.',
+                    tech: 'Bootstrap + D3.js',
+                    icon: 'fa-heartbeat'
+                }, {
+                    id: 6,
+                    name: 'Music Player UI',
+                    desc: 'Sleek audio player with playlist management and visualizer.',
+                    tech: 'CSS + Web Audio API',
+                    icon: 'fa-music'
+                }],
+                services: [{
+                    id: 1,
+                    title: 'Frontend Development',
+                    desc: 'Pixel-perfect, responsive interfaces using modern frameworks and vanilla JS.',
+                    icon: 'fa-laptop-code'
+                }, {
+                    id: 2,
+                    title: 'UI/UX Design',
+                    desc: 'User-centric design with wireframing, prototyping, and design systems.',
+                    icon: 'fa-pen-fancy'
+                }, {
+                    id: 3,
+                    title: 'Performance & SEO',
+                    desc: 'Speed optimization, Core Web Vitals, accessibility, and search ranking.',
+                    icon: 'fa-gauge-high'
+                }, {
+                    id: 4,
+                    title: 'API Integration',
+                    desc: 'RESTful & GraphQL API integration, data fetching, and real-time updates.',
+                    icon: 'fa-plug'
+                }, {
+                    id: 5,
+                    title: 'Responsive Design',
+                    desc: 'Mobile-first, cross-browser compatible layouts that shine on every device.',
+                    icon: 'fa-mobile-screen'
+                }, {
+                    id: 6,
+                    title: 'Maintenance & Support',
+                    desc: 'Ongoing support, bug fixes, feature additions, and performance monitoring.',
+                    icon: 'fa-headset'
+                }],
+                social: [
+                    { platform: 'GitHub', icon: 'fa-github', url: '#' },
+                    { platform: 'LinkedIn', icon: 'fa-linkedin', url: '#' },
+                    { platform: 'Twitter', icon: 'fa-x-twitter', url: '#' },
+                    { platform: 'YouTube', icon: 'fa-youtube', url: '#' }
+                ]
+            };
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  2.  SIMULATED FETCH  (async / JSON)
+            //      In production, replace this with:
+            //      const res = await fetch('data.json');
+            //      const data = await res.json();
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            function fetchData() {
+                return new Promise((resolve) => {
+                    // Simulate network delay (300ms)
+                    setTimeout(() => {
+                        // Clone the DATA object to mimic a fresh JSON response
+                        const json = JSON.parse(JSON.stringify(DATA));
+                        resolve(json);
+                    }, 300);
+                });
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  3.  RENDER FUNCTIONS
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            function renderStats(stats) {
+                const container = document.getElementById('heroStats');
+                if (!container) return;
+                container.innerHTML = stats.map(s =>
+                    `<div class="stat-item">
+                        <div class="text-2xl fw-bold text-white">${s.value}</div>
+                        <div class="text-gray-500 small">${s.label}</div>
+                    </div>`
+                ).join('');
+            }
+
+            function renderProjects(projects) {
+                const container = document.getElementById('projectsContainer');
+                if (!container) return;
+                if (!projects || projects.length === 0) {
+                    container.innerHTML =
+                        `<div class="col-12 text-center text-gray-400">No projects available.</div>`;
+                    return;
+                }
+                container.innerHTML = projects.map((p, i) => {
+                    const tagsHtml = p.tags.map(t => `<span class="tech-tag">${t}</span>`).join(' ');
+                    const delay = i * 80;
+                    return `
+                        <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.5s ease ${delay}ms both;">
+                            <div class="glass-card rounded-4 p-4 h-100 d-flex flex-column">
+                                <div class="d-flex align-items-start mb-3">
+                                    <div class="bg-gradient-to-br ${p.color} rounded-3 p-3 me-3">
+                                        <i class="fas ${p.icon} text-indigo-300 fs-3"></i>
+                                    </div>
+                                    <h5 class="card-title text-white fw-bold fs-5 mb-0">${p.title}</h5>
+                                </div>
+                                <p class="text-gray-400 flex-grow-1">${p.desc}</p>
+                                <div class="mt-3 d-flex flex-wrap gap-2">${tagsHtml}</div>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            function renderPortfolio(items) {
+                const container = document.getElementById('portfolioContainer');
+                if (!container) return;
+                if (!items || items.length === 0) {
+                    container.innerHTML =
+                        `<div class="col-12 text-center text-gray-400">No portfolio items available.</div>`;
+                    return;
+                }
+                container.innerHTML = items.map((p, i) => {
+                    const delay = i * 80;
+                    return `
+                        <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.5s ease ${delay}ms both;">
+                            <div class="glass-card rounded-4 p-4 h-100 d-flex flex-column">
+                                <div class="d-flex align-items-center mb-3">
+                                    <div class="bg-gradient-to-br from-purple-500/20 to-pink-500/20 rounded-3 p-3 me-3">
+                                        <i class="fas ${p.icon} text-purple-300 fs-3"></i>
+                                    </div>
+                                    <h5 class="card-title text-white fw-bold fs-5 mb-0">${p.name}</h5>
+                                </div>
+                                <p class="text-gray-400 flex-grow-1">${p.desc}</p>
+                                <span class="tech-tag align-self-start"><i class="fas fa-tag me-1"></i>${p.tech}</span>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            function renderServices(services) {
+                const container = document.getElementById('servicesContainer');
+                if (!container) return;
+                if (!services || services.length === 0) {
+                    container.innerHTML =
+                        `<div class="col-12 text-center text-gray-400">No services available.</div>`;
+                    return;
+                }
+                container.innerHTML = services.map((s, i) => {
+                    const delay = i * 80;
+                    return `
+                        <div class="col-md-6 col-lg-4" style="animation: fadeInUp 0.5s ease ${delay}ms both;">
+                            <div class="glass-card rounded-4 p-4 text-center h-100 d-flex flex-column align-items-center">
+                                <div class="bg-gradient-to-br from-indigo-500/20 to-blue-500/20 rounded-3 p-4 mb-3">
+                                    <i class="fas ${s.icon} text-indigo-300 fs-2"></i>
+                                </div>
+                                <h5 class="text-white fw-bold fs-5">${s.title}</h5>
+                                <p class="text-gray-400 small">${s.desc}</p>
+                            </div>
+                        </div>
+                    `;
+                }).join('');
+            }
+
+            function renderSocial(social) {
+                const container = document.getElementById('socialLinks');
+                if (!container) return;
+                container.innerHTML = social.map(s =>
+                    `<a href="${s.url}" class="text-gray-500 hover:text-indigo-400 transition" title="${s.platform}">
+                        <i class="fab ${s.icon}"></i>
+                    </a>`
+                ).join('');
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  4.  DEMO:  EXPORT DATA TO JSON (console)
+            //      Shows how to stringify the data for external use.
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            function logJSON() {
+                const jsonString = JSON.stringify(DATA, null, 2);
+                console.log('📦 Full JSON Data:\n', jsonString);
+                console.log('📄 To use this as an external file, copy the JSON above into a file named "data.json"');
+                console.log('🌐 Then replace the simulated fetch with:  const res = await fetch("data.json");');
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  5.  BOOTSTRAP  —  fetch + render
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            async function init() {
+                try {
+                    // ── Fetch JSON data (simulated) ──
+                    const data = await fetchData();
+
+                    // ── Render all sections ──
+                    renderStats(data.stats);
+                    renderProjects(data.projects);
+                    renderPortfolio(data.portfolio);
+                    renderServices(data.services);
+                    renderSocial(data.social);
+
+                    // ── Log JSON to console for inspection ──
+                    logJSON();
+
+                    console.log('✅ All content rendered from JSON data.');
+                } catch (error) {
+                    console.error('❌ Failed to load data:', error);
+                    // Show error in all containers
+                    const containers = ['projectsContainer', 'portfolioContainer', 'servicesContainer'];
+                    containers.forEach(id => {
+                        const el = document.getElementById(id);
+                        if (el) {
+                            el.innerHTML =
+                                `<div class="col-12 text-center text-danger">⚠️ Failed to load data. Please try again.</div>`;
+                        }
+                    });
+                }
+            }
+
+            // ── Run when DOM is ready ──
+            if (document.readyState === 'loading') {
+                document.addEventListener('DOMContentLoaded', init);
+            } else {
+                init();
+            }
+
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+            //  6.  CONTACT FORM  (JSON-powered submission demo)
+            // ━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+            const contactForm = document.getElementById('contactForm');
+            const feedback = document.getElementById('formFeedback');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const name = document.getElementById('contactName').value.trim();
+                    const email = document.getElementById('contactEmail').value.trim();
+                    const message = document.getElementById('contactMessage').value.trim();
+
+                    // Build a JSON payload
+                    const payload = {
+                        name: name,
+                        email: email,
+                        message: message,
+                        timestamp: new Date().toISOString()
+                    };
+
+                    console.log('📨 Contact form payload (JSON):', JSON.stringify(payload, null, 2));
+
+                    // Simulate sending to an API
+                    feedback.classList.remove('d-none', 'text-danger', 'text-success');
+
+                    // Show sending state
+                    feedback.textContent = '⏳ Sending...';
+                    feedback.className = 'mt-3 text-center text-info';
+
+                    setTimeout(() => {
+                        // Simulate success
+                        feedback.className = 'mt-3 text-center text-success';
+                        feedback.innerHTML = '✅ Message sent successfully! (JSON logged to console)';
+                        contactForm.reset();
+
+                        // In production, you would do:
+                        // const res = await fetch('https://api.example.com/contact', {
+                        //   method: 'POST',
+                        //   headers: { 'Content-Type': 'application/json' },
+                        //   body: JSON.stringify(payload)
+                        // });
+                        // const result = await res.json();
+                        // console.log('Server response:', result);
+                    }, 1200);
+                });
+            }
+
+        })();
+    </script>
+
+</body>
+</html>
